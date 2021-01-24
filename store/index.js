@@ -29,9 +29,10 @@ export const actions = {
         // No valid cookie found
       }
     }
-    if (req.url === '/logout') {
-      user = null;
-    }
+
+    // if (req.url === '/logout') {
+    //   user = null;
+    // }
 
     // 提交 mutation 修改 state 状态
     commit('setUser', user);

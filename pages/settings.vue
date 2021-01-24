@@ -28,6 +28,9 @@
                 </button>
             </fieldset>
           </form>
+
+          <hr />
+          <button class="btn btn-outline-danger" @click="logout">Or click here to logout.</button>
         </div>
 
       </div>
@@ -37,6 +40,8 @@
 
 <script>
 import { getUserInfo, updateUserInfo } from '@/api'
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   name: 'SettingsPage',
   middleware: 'authenticated',
@@ -60,6 +65,12 @@ export default {
       this.updateing = true;
       await updateUserInfo({ user: this.user });
       this.updateing = false;
+    },
+    logout () {
+      this.$store.commit('setUser', null);
+      Cookie.remove('user');
+      location.href = location.origin + '/login';
+      // this.$router.push('/login');
     }
   },
   components: {}
