@@ -17,8 +17,8 @@ export const listArticles = (params) => request({ method: 'GET', url: `/api/arti
 export const feedArticles = (params) => request({ method: 'GET', url: `/api/articles/feed`, params });
 export const getArticle = ({slug}) => request({ method: 'GET', url: `/api/articles/${slug}` });
 export const createArticle = (data) => request({ method: 'POST', url: `/api/articles`, data });
-export const updateArticle = (data) => request({ method: 'PUT', url: `/api/articles/${slug}`, data });
-export const deleteArticle = ({slug}) => request({ method: 'DELETE', url: `/api/articles/${slug}` });
+export const updateArticle = ({slug, ...data}) => request({ method: 'PUT', url: `/api/articles/${slug}`, data });
+export const deleteArticle = (slug) => request({ method: 'DELETE', url: `/api/articles/${slug}` });
 
 export const favoriteArticle = (slug) => request({ method: 'POST', url: `/api/articles/${slug}/favorite` });
 export const unfavoriteArticle = (slug) => request({ method: 'DELETE', url: `/api/articles/${slug}/favorite` });

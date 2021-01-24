@@ -31,19 +31,25 @@
 </template>
 
 <script>
-import { createArticle } from '@/api'
+import { getArticle, createArticle, updateArticle } from '@/api'
 export default {
   name: 'EditArticlePage',
   middleware: 'authenticated',
-  data () {
+  async asyncData ({route}) {
+    let data = {};
+    if (route.query.slug) {
+      const { data:article } = await getArticle({slug: route.query.slug});
+      data = article.article
+    }
+
+    const { title, description, body, tagList=[] } = data;
     return {
-      title: '',
-      description: '',
-      body: '',
-      tagList: ''
+      title: title || '',
+      description: description || '',
+      body: body || '',
+      tagList: tagList.join(',')
     }
   },
-  computed: {},
   methods: {
     async onSubmit() {
       const article = {
@@ -52,7 +58,13 @@ export default {
         body: this.body,
         tagList: this.tagList.split(',')
       }
-      const { data } = await createArticle({article});
+      const formData = { article }
+      let xhrRequers = createArticle;
+      if (this.$route.query.slug) {
+        formData.slug = this.$route.query.slug;
+        xhrRequers = updateArticle;
+      }
+      const { data } = await xhrRequers(formData);
       this.$router.push(`/article/${data.article.slug}`);
     }
   },
