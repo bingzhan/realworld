@@ -63,8 +63,10 @@ export default {
         return false;
       }
       this.updateing = true;
-      await updateUserInfo({ user: this.user });
+      const { data } = await updateUserInfo({ user: this.user });
       this.updateing = false;
+      this.$store.commit('setUser', data.user);
+      Cookie.set('user', data.user);
     },
     logout () {
       this.$store.commit('setUser', null);
